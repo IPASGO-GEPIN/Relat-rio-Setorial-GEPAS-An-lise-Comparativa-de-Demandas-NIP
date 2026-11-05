@@ -2,8 +2,30 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<!--
+  ============================================================
+  RELATÓRIO SETORIAL GEPAS — ATUALIZAÇÃO OUTUBRO
+  ============================================================
+  Fonte: Relatório_Setorial_GEPAS__Outubro.xlsx
+
+  Notas de atualização:
+  1. Aba "NIPS Evolução Mensal": cabeçalho da última coluna
+     duplicado como "Setembro", mas os valores indicam OUTUBRO.
+  2. TOTAL de Setembro no Excel está como 142, porém a soma
+     dos componentes é 129 + 14 = 143. Adotado 143.
+  3. Aba "Áreas Demandadas" (Outubro): "CODIN/COGAT" e "COGAT"
+     representam a atuação conjunta e foram consolidados.
+  4. Aba "Objeto Geral" (Outubro): EXAME (35) é nova categoria.
+  5. Aba "Planos demandados" (Outubro): IPASGO SAUDE PLENO (1).
+  6. Aba "Cidades Demandas": recorte parcial por cidade.
+  7. Inversão semântica de cores: Aumentos em Vermelho (alerta)
+     e Quedas em Verde (melhoria), adequado ao contexto de NIPs.
+  8. Logotipo do Ipasgo inserido no canto superior direito com
+     blend mode para remover o fundo branco e integrar ao header.
+  ============================================================
+-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Relatório Setorial GEPAS · Análise Comparativa de Demandas</title>
+<title>Relatório Setorial GEPAS · Setembro × Outubro</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,7 +37,7 @@
 
 <style>
 /* ============================================================
-   PALETA "FOREST & MINT"
+   PALETA "FOREST & MINT" COM LÓGICA DE ALERTA
    ============================================================ */
 :root{
   --petrol:      #1b4332;
@@ -33,10 +55,11 @@
   --line:        #e3efe7;
   --card:        #ffffff;
 
-  --up:          #2d6a4f;
-  --up-bg:       #d8f3dc;
-  --down:        #b23a34;
-  --down-bg:     #fbe6e4;
+  /* INVERSÃO DE CORES: Aumento = Vermelho | Queda = Verde */
+  --up:          #b23a34; /* Vermelho para aumento (alerta) */
+  --up-bg:       #fbe6e4; /* Fundo vermelho claro */
+  --down:        #2d6a4f; /* Verde para queda (melhoria) */
+  --down-bg:     #d8f3dc; /* Fundo verde claro */
   --flat:        #6b8a79;
   --flat-bg:     #eef3f0;
 
@@ -59,7 +82,7 @@ body{
 }
 
 /* ============================================================
-   HEADER
+   HEADER COM LOGOTIPO IPASGO
    ============================================================ */
 .header{
   position:relative;
@@ -84,6 +107,22 @@ body{
   background:radial-gradient(circle,rgba(216,243,220,.14),transparent 70%);
   bottom:-200px;left:-90px;
 }
+
+/* ESTILO DO LOGOTIPO */
+.ipasgo-logo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  max-height: 110px;
+  width: auto;
+  object-fit: contain;
+  mix-blend-mode: multiply; /* Remove o fundo branco e integra ao gradiente */
+  border-bottom-left-radius: 24px;
+  z-index: 10;
+  pointer-events: none; /* Impede que o logo bloqueie cliques no menu */
+}
+
 .header-inner{
   position:relative;
   z-index:2;
@@ -94,6 +133,7 @@ body{
   gap:28px;
   align-items:flex-start;
   justify-content:space-between;
+  padding-right: 120px; /* Garante que o texto não sobreponha o logo */
 }
 .header-eyebrow{
   display:inline-flex;
@@ -240,8 +280,8 @@ body{
 .kpi-chip{
   font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px;letter-spacing:.02em;
 }
-.kpi-chip.up{background:var(--up-bg);color:var(--up)}
-.kpi-chip.down{background:var(--down-bg);color:var(--down)}
+.kpi-chip.up{background:var(--up-bg);color:var(--up)}   /* Vermelho */
+.kpi-chip.down{background:var(--down-bg);color:var(--down)} /* Verde */
 .kpi.accent .kpi-chip{background:rgba(216,243,220,.2);color:var(--mint)}
 .kpi-label{
   font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.09em;
@@ -292,105 +332,49 @@ body{
 .chart-box.short{height:250px}
 
 /* ============================================================
-   DETALHAMENTO CAUSAS TOP 5 (por decisão)
+   DETALHAMENTO CAUSAS TOP 5
    ============================================================ */
 .causas-detalhe{
-  margin-top:26px;
-  padding-top:22px;
-  border-top:1px dashed var(--mint-mid);
+  margin-top:26px;padding-top:22px;border-top:1px dashed var(--mint-mid);
 }
 .causas-detalhe-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-bottom:16px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px;
 }
 .causas-detalhe-head h3{
-  font-size:13.5px;
-  font-weight:700;
-  color:var(--petrol);
-  letter-spacing:-.005em;
-  display:flex;
-  align-items:center;
-  gap:8px;
+  font-size:13.5px;font-weight:700;color:var(--petrol);letter-spacing:-.005em;
+  display:flex;align-items:center;gap:8px;
 }
 .causas-detalhe-head h3 svg{width:16px;height:16px;color:var(--emerald)}
-.causas-detalhe-head .sub{
-  font-size:11.5px;
-  color:var(--muted);
-  font-weight:500;
-}
-.causas-detalhe-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:18px;
-}
+.causas-detalhe-head .sub{font-size:11.5px;color:var(--muted);font-weight:500}
+.causas-detalhe-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .causas-mes{
-  background:#fafdfb;
-  border:1px solid var(--line);
-  border-radius:var(--radius-sm);
-  overflow:hidden;
+  background:#fafdfb;border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden;
 }
 .causas-mes-title{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:11px 16px;
+  display:flex;align-items:center;justify-content:space-between;padding:11px 16px;
   background:linear-gradient(90deg, var(--petrol) 0%, var(--forest) 100%);
-  color:#fff;
-  font-size:11.5px;
-  font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:.09em;
+  color:#fff;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;
 }
 .causas-mes-title .total{
-  font-size:11px;
-  font-weight:700;
-  padding:3px 9px;
-  border-radius:100px;
-  background:rgba(216,243,220,.2);
-  color:var(--mint);
+  font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px;
+  background:rgba(216,243,220,.2);color:var(--mint);
 }
 .causas-mes table{
-  width:100%;
-  border-collapse:separate;
-  border-spacing:0;
-  font-size:12px;
-  min-width:0;
+  width:100%;border-collapse:separate;border-spacing:0;font-size:12px;min-width:0;
 }
 .causas-mes thead th{
-  background:#eef6f0;
-  color:var(--forest);
-  font-size:9.5px;
-  font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:.07em;
-  padding:8px 10px;
-  text-align:right;
-  white-space:nowrap;
+  background:#eef6f0;color:var(--forest);font-size:9.5px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.07em;padding:8px 10px;text-align:right;white-space:nowrap;
   border-bottom:1px solid var(--mint-soft);
 }
-.causas-mes thead th:first-child{
-  text-align:left;
-  border-radius:0;
-}
+.causas-mes thead th:first-child{text-align:left;border-radius:0}
 .causas-mes tbody td{
-  padding:9px 10px;
-  border-bottom:1px solid var(--line);
-  text-align:right;
-  font-weight:600;
-  color:var(--ink-soft);
-  font-variant-numeric:tabular-nums;
+  padding:9px 10px;border-bottom:1px solid var(--line);text-align:right;
+  font-weight:600;color:var(--ink-soft);font-variant-numeric:tabular-nums;
 }
 .causas-mes tbody tr:last-child td{border-bottom:none}
 .causas-mes tbody td:first-child{
-  text-align:left;
-  font-weight:600;
-  color:var(--petrol);
-  font-size:11px;
-  line-height:1.3;
+  text-align:left;font-weight:600;color:var(--petrol);font-size:11px;line-height:1.3;
 }
 .causas-mes tbody tr:hover{background:#f4faf6}
 .causas-mes .col-proc{color:var(--forest);font-weight:700}
@@ -399,12 +383,10 @@ body{
 .causas-mes .col-qtd{color:var(--petrol);font-weight:800}
 .causas-mes .vazio{color:#c2cec7;font-weight:500}
 
-@media (max-width:900px){
-  .causas-detalhe-grid{grid-template-columns:1fr}
-}
+@media (max-width:900px){.causas-detalhe-grid{grid-template-columns:1fr}}
 
 /* ============================================================
-   PLANOS (barras CSS)
+   PLANOS
    ============================================================ */
 .planos{display:flex;flex-direction:column;gap:16px;padding-top:4px}
 .plano-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px;gap:10px}
@@ -420,7 +402,7 @@ body{
 .plano-fill.alt{background:linear-gradient(90deg,var(--emerald),var(--mint-mid))}
 
 /* ============================================================
-   TABELA COMPARATIVA (ORIGINAL)
+   TABELAS
    ============================================================ */
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
 .tab{
@@ -435,9 +417,7 @@ body{
   border-color:transparent;color:#fff;box-shadow:0 6px 16px rgba(27,67,50,.22);
 }
 .table-wrap{overflow-x:auto;border-radius:var(--radius-sm)}
-table{
-  width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px;min-width:760px;
-}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px;min-width:760px}
 thead th{
   background:var(--petrol);color:var(--mint-soft);font-size:10.5px;font-weight:700;
   text-transform:uppercase;letter-spacing:.09em;padding:13px 16px;text-align:left;white-space:nowrap;
@@ -478,9 +458,7 @@ td.center{text-align:center}
 }
 .table-foot svg{width:15px;height:15px;color:var(--emerald);flex-shrink:0}
 
-/* ============================================================
-   EVOLUÇÃO MENSAL CONSOLIDADA
-   ============================================================ */
+/* Evolução Mensal */
 .table-evolucao thead th:last-child { border-radius: 0 var(--radius-sm) 0 0; text-align: right; }
 .table-evolucao tbody tr.total-row td {
   background-color: var(--mint-soft);color: var(--petrol);font-weight: 800;
@@ -529,9 +507,7 @@ td.center{text-align:center}
   color: var(--petrol);font-weight: 800;
 }
 
-/* ============================================================
-   PAINEL DE CONCENTRAÇÃO (callout)
-   ============================================================ */
+/* Callout de concentração */
 .conc-callout {
   margin-top: 18px;display: grid;grid-template-columns: 1fr auto 1fr;gap: 0;
   background: linear-gradient(135deg, #f6fcf7 0%, #eef9f1 100%);
@@ -574,7 +550,7 @@ td.center{text-align:center}
 }
 
 /* ============================================================
-   INSIGHTS (acordeão)
+   INSIGHTS
    ============================================================ */
 .insights-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;align-items:start}
 .insight{
@@ -593,6 +569,8 @@ td.center{text-align:center}
   flex-shrink:0;background:var(--mint-soft);color:var(--forest);
 }
 .insight-icon svg{width:17px;height:17px}
+/* Cores dos ícones com a nova lógica */
+.insight-icon.up{background:var(--up-bg);color:var(--up)}
 .insight-icon.down{background:var(--down-bg);color:var(--down)}
 .insight-icon.neutral{background:var(--flat-bg);color:var(--flat)}
 .insight-titles{flex:1;min-width:0}
@@ -656,19 +634,21 @@ td.center{text-align:center}
   .card.span-2{grid-column:span 1}
   .chart-box{height:280px}
   .chart-box.tall{height:320px}
+  .ipasgo-logo { max-height: 80px; border-bottom-left-radius: 16px; }
+  .header-inner { padding-right: 80px; }
 }
 @media (max-width:620px){
   .kpi-grid{grid-template-columns:1fr}
-  .header-inner{flex-direction:column}
+  .header-inner{flex-direction:column; padding-right: 0;}
   .header-period{width:100%}
   .kpi-value{font-size:30px}
   .insight-content{padding-left:20px}
   .card{padding:18px 16px}
   table{font-size:12.5px}
   thead th,tbody td{padding:11px 12px}
+  .ipasgo-logo { max-height: 60px; opacity: 0.5; pointer-events: none; }
 }
 
-/* animação de entrada */
 @keyframes rise{
   from{opacity:0;transform:translateY(14px)}
   to{opacity:1;transform:translateY(0)}
@@ -684,6 +664,11 @@ td.center{text-align:center}
 
 <!-- ================= HEADER ================= -->
 <header class="header">
+  <!-- LOGOTIPO IPASGO INSERIDO AQUI -->
+  <img src="https://play-lh.googleusercontent.com/nNX3uE1J5d2IA3aywlINCxcfc-y2uKxo5QcH4GFK1R4AJZj_4RhlG6OYL6_78pAY1lsAWZrblOuiENNj8WDgGw=w240-h480-rw" 
+       alt="Ipasgo Logo" 
+       class="ipasgo-logo">
+  
   <div class="header-inner">
     <div>
       <div class="header-eyebrow">
@@ -694,14 +679,14 @@ td.center{text-align:center}
       <p>
         Painel executivo de monitoramento das Notificações de Intervenção Preliminar (NIPs),
         com comparativo de volume, causas, objetos, áreas demandadas e distribuição geográfica
-        entre os meses de agosto e setembro.
+        entre os meses de Setembro e Outubro.
       </p>
     </div>
     <div class="header-period">
       <div class="hp-icon"><i data-lucide="calendar-range"></i></div>
       <div>
         <div class="hp-label">Período analisado</div>
-        <div class="hp-value">Agosto <em>vs.</em> Setembro</div>
+        <div class="hp-value">Setembro <em>vs.</em> Outubro</div>
       </div>
     </div>
   </div>
@@ -718,10 +703,10 @@ td.center{text-align:center}
           <div class="kpi-icon"><i data-lucide="inbox"></i></div>
           <span class="kpi-chip">Mês base</span>
         </div>
-        <div class="kpi-label">Demanda — Agosto</div>
-        <div class="kpi-value">119 <small>NIPs</small></div>
-        <div class="kpi-sub">101 assistenciais · 18 não assistenciais</div>
-        <div class="kpi-bar"><i style="width:83.2%"></i></div>
+        <div class="kpi-label">Demanda — Setembro</div>
+        <div class="kpi-value">143 <small>NIPs</small></div>
+        <div class="kpi-sub">129 assistenciais · 14 não assistenciais</div>
+        <div class="kpi-bar"><i style="width:94.1%"></i></div>
       </div>
 
       <div class="kpi accent">
@@ -729,31 +714,31 @@ td.center{text-align:center}
           <div class="kpi-icon"><i data-lucide="inbox-check"></i></div>
           <span class="kpi-chip">Mês atual</span>
         </div>
-        <div class="kpi-label">Demanda — Setembro</div>
-        <div class="kpi-value">143 <small>NIPs</small></div>
-        <div class="kpi-sub">129 assistenciais · 14 não assistenciais</div>
+        <div class="kpi-label">Demanda — Outubro</div>
+        <div class="kpi-value">152 <small>NIPs</small></div>
+        <div class="kpi-sub">136 assistenciais · 16 não assistenciais</div>
         <div class="kpi-bar"><i style="width:100%"></i></div>
       </div>
 
       <div class="kpi">
         <div class="kpi-top">
           <div class="kpi-icon"><i data-lucide="trending-up"></i></div>
-          <span class="kpi-chip up">+24 NIPs</span>
+          <span class="kpi-chip up">+9 NIPs</span>
         </div>
         <div class="kpi-label">Variação global</div>
-        <div class="kpi-value">+20,2<small>%</small></div>
-        <div class="kpi-sub">119 → 143 demandas no comparativo mensal</div>
+        <div class="kpi-value">+6,3<small>%</small></div>
+        <div class="kpi-sub">143 → 152 demandas no comparativo mensal</div>
         <div class="kpi-bar"><i style="width:100%"></i></div>
       </div>
 
       <div class="kpi">
         <div class="kpi-top">
           <div class="kpi-icon"><i data-lucide="flame"></i></div>
-          <span class="kpi-chip up">+109,1%</span>
+          <span class="kpi-chip up">+280,0%</span>
         </div>
         <div class="kpi-label">Maior crescimento</div>
-        <div class="kpi-value">Terapia</div>
-        <div class="kpi-sub">11 → 23 demandas · objeto com maior salto relativo</div>
+        <div class="kpi-value">Prazo de Autorização</div>
+        <div class="kpi-sub">5 → 19 demandas · maior salto percentual do período</div>
         <div class="kpi-bar"><i style="width:100%"></i></div>
       </div>
 
@@ -765,86 +750,30 @@ td.center{text-align:center}
     <div class="section-head">
       <h2><i data-lucide="bar-chart-3"></i> Visualização Gráfica</h2>
       <span class="rule"></span>
-      <span class="hint">Comparativo Agosto × Setembro · valores e % visíveis nos gráficos</span>
+      <span class="hint">Comparativo Setembro × Outubro · valores e % visíveis nos gráficos</span>
     </div>
 
     <div class="charts-grid">
 
-      <!-- ===== CARD CAUSAS TOP 5 (com detalhamento por decisão) ===== -->
+      <!-- ===== CARD CAUSAS TOP 5 ===== -->
       <div class="card span-2">
         <div class="card-head">
           <div>
             <div class="card-title">Causas Top 5 — Comparativo Mensal</div>
             <div class="card-desc">Volume de NIPs por causa raiz, lado a lado entre os dois meses</div>
           </div>
-          <span class="card-badge">Agosto × Setembro</span>
+          <span class="card-badge">Setembro × Outubro</span>
         </div>
         <div class="chart-box tall"><canvas id="chartCausas"></canvas></div>
 
         <!-- DETALHAMENTO POR DECISÃO -->
         <div class="causas-detalhe">
           <div class="causas-detalhe-head">
-            <h3><i data-lucide="gavel"></i> Detalhamento - Análise Preliminar por Procedência</h3>
+            <h3><i data-lucide="gavel"></i> Detalhamento por Tipo de Decisão</h3>
             <span class="sub">Procedente · Improcedente · Parcialmente</span>
           </div>
 
           <div class="causas-detalhe-grid">
-
-            <!-- AGOSTO -->
-            <div class="causas-mes">
-              <div class="causas-mes-title">
-                <span>Agosto</span>
-                <span class="total">103 NIPs · Top 5</span>
-              </div>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Causa</th>
-                    <th>Qtd</th>
-                    <th>Proc.</th>
-                    <th>Improc.</th>
-                    <th>Parc.</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Rol de Procedimentos</td>
-                    <td class="col-qtd">41</td>
-                    <td class="col-proc">20</td>
-                    <td class="col-improc">15</td>
-                    <td class="col-parc">6</td>
-                  </tr>
-                  <tr>
-                    <td>Regras de Acesso</td>
-                    <td class="col-qtd">18</td>
-                    <td class="col-proc">9</td>
-                    <td class="col-improc">8</td>
-                    <td class="col-parc">1</td>
-                  </tr>
-                  <tr>
-                    <td>Prazos Máximos</td>
-                    <td class="col-qtd">20</td>
-                    <td class="col-proc">14</td>
-                    <td class="col-improc">6</td>
-                    <td class="col-parc vazio">—</td>
-                  </tr>
-                  <tr>
-                    <td>Mensalidades / Cobranças</td>
-                    <td class="col-qtd">9</td>
-                    <td class="col-proc">3</td>
-                    <td class="col-improc">5</td>
-                    <td class="col-parc">1</td>
-                  </tr>
-                  <tr>
-                    <td>Rede de Atendimento</td>
-                    <td class="col-qtd">15</td>
-                    <td class="col-proc">12</td>
-                    <td class="col-improc">3</td>
-                    <td class="col-parc vazio">—</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
 
             <!-- SETEMBRO -->
             <div class="causas-mes">
@@ -902,18 +831,74 @@ td.center{text-align:center}
               </table>
             </div>
 
+            <!-- OUTUBRO -->
+            <div class="causas-mes">
+              <div class="causas-mes-title">
+                <span>Outubro</span>
+                <span class="total">139 NIPs · Top 5</span>
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Causa</th>
+                    <th>Qtd</th>
+                    <th>Proc.</th>
+                    <th>Improc.</th>
+                    <th>Parc.</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Rol de Procedimentos</td>
+                    <td class="col-qtd">54</td>
+                    <td class="col-proc">17</td>
+                    <td class="col-improc">19</td>
+                    <td class="col-parc vazio">—</td>
+                  </tr>
+                  <tr>
+                    <td>Regras de Acesso</td>
+                    <td class="col-qtd">27</td>
+                    <td class="col-proc">16</td>
+                    <td class="col-improc">5</td>
+                    <td class="col-parc vazio">—</td>
+                  </tr>
+                  <tr>
+                    <td>Prazos Máximos</td>
+                    <td class="col-qtd">24</td>
+                    <td class="col-proc">10</td>
+                    <td class="col-improc">8</td>
+                    <td class="col-parc vazio">—</td>
+                  </tr>
+                  <tr>
+                    <td>Mensalidades / Cobranças</td>
+                    <td class="col-qtd">13</td>
+                    <td class="col-proc">4</td>
+                    <td class="col-improc">6</td>
+                    <td class="col-parc vazio">—</td>
+                  </tr>
+                  <tr>
+                    <td>Rede de Atendimento</td>
+                    <td class="col-qtd">21</td>
+                    <td class="col-proc">8</td>
+                    <td class="col-improc">2</td>
+                    <td class="col-parc vazio">—</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
           </div>
         </div>
       </div>
 
-      <!-- Rosca -->
+      <!-- Rosca Objeto -->
       <div class="card">
         <div class="card-head">
           <div>
             <div class="card-title">Distribuição da Demanda Atual</div>
-            <div class="card-desc">Composição por objeto — Setembro</div>
+            <div class="card-desc">Composição por objeto — Outubro</div>
           </div>
-          <span class="card-badge">Setembro</span>
+          <span class="card-badge">Outubro</span>
         </div>
         <div class="chart-box"><canvas id="chartObjeto"></canvas></div>
       </div>
@@ -923,9 +908,9 @@ td.center{text-align:center}
         <div class="card-head">
           <div>
             <div class="card-title">Evolução Mensal dos NIPs</div>
-            <div class="card-desc">Série histórica Jan–Set, assistencial vs. não assistencial</div>
+            <div class="card-desc">Série histórica Jan–Out, assistencial vs. não assistencial</div>
           </div>
-          <span class="card-badge">Jan – Set</span>
+          <span class="card-badge">Jan – Out</span>
         </div>
         <div class="chart-box"><canvas id="chartEvolucao"></canvas></div>
       </div>
@@ -947,9 +932,9 @@ td.center{text-align:center}
         <div class="card-head">
           <div>
             <div class="card-title">Planos Demandados</div>
-            <div class="card-desc">Distribuição das 143 demandas de Setembro por produto</div>
+            <div class="card-desc">Distribuição das 152 demandas de Outubro por produto</div>
           </div>
-          <span class="card-badge">Setembro</span>
+          <span class="card-badge">Outubro</span>
         </div>
         <div class="planos" id="planosList"></div>
       </div>
@@ -962,7 +947,7 @@ td.center{text-align:center}
     <div class="section-head">
       <h2><i data-lucide="calendar-days"></i> Evolução Mensal Consolidada</h2>
       <span class="rule"></span>
-      <span class="hint">Série histórica Jan–Set, total acumulado e concentração por natureza</span>
+      <span class="hint">Série histórica Jan–Out, total acumulado e concentração por natureza</span>
     </div>
 
     <div class="card">
@@ -980,6 +965,7 @@ td.center{text-align:center}
               <th class="num">Julho</th>
               <th class="num">Agosto</th>
               <th class="num">Setembro</th>
+              <th class="num">Outubro</th>
               <th class="num total-col">Total Ano</th>
               <th class="num conc-col">% Concentração</th>
             </tr>
@@ -996,8 +982,9 @@ td.center{text-align:center}
               <td class="num">116</td>
               <td class="num">101</td>
               <td class="num">129</td>
-              <td class="num total-col">827</td>
-              <td class="num conc-col">87,05%</td>
+              <td class="num">136</td>
+              <td class="num total-col">963</td>
+              <td class="num conc-col">87,39%</td>
             </tr>
             <tr>
               <td class="item">NÃO ASSISTENCIAL</td>
@@ -1010,8 +997,9 @@ td.center{text-align:center}
               <td class="num">19</td>
               <td class="num">18</td>
               <td class="num">14</td>
-              <td class="num total-col">123</td>
-              <td class="num conc-col">12,95%</td>
+              <td class="num">16</td>
+              <td class="num total-col">139</td>
+              <td class="num conc-col">12,61%</td>
             </tr>
             <tr class="total-row">
               <td class="item">TOTAL DE NIPs</td>
@@ -1024,20 +1012,22 @@ td.center{text-align:center}
               <td class="num">135</td>
               <td class="num">119</td>
               <td class="num">143</td>
-              <td class="num total-col">950</td>
+              <td class="num">152</td>
+              <td class="num total-col">1.102</td>
               <td class="num conc-col">100,00%</td>
             </tr>
             <tr class="percent-row">
               <td class="item">% do Total Ano</td>
+              <td class="num">7,99%</td>
+              <td class="num">7,71%</td>
+              <td class="num">9,80%</td>
+              <td class="num">7,26%</td>
               <td class="num">9,26%</td>
-              <td class="num">8,95%</td>
-              <td class="num">11,37%</td>
-              <td class="num">8,42%</td>
-              <td class="num">10,74%</td>
-              <td class="num">9,47%</td>
-              <td class="num">14,21%</td>
-              <td class="num">12,53%</td>
-              <td class="num">15,05%</td>
+              <td class="num">8,17%</td>
+              <td class="num">12,25%</td>
+              <td class="num">10,80%</td>
+              <td class="num">12,98%</td>
+              <td class="num">13,79%</td>
               <td class="num total-col">100,00%</td>
               <td class="num conc-col">—</td>
             </tr>
@@ -1050,8 +1040,8 @@ td.center{text-align:center}
           <div class="conc-icon"><i data-lucide="crown"></i></div>
           <div class="conc-body">
             <div class="conc-label">Concentração dominante</div>
-            <div class="conc-value">Assistencial <small>· 827 NIPs</small></div>
-            <div class="conc-pct">87,05% do total anual</div>
+            <div class="conc-value">Assistencial <small>· 963 NIPs</small></div>
+            <div class="conc-pct">87,39% do total anual</div>
           </div>
         </div>
         <div class="conc-divider">
@@ -1061,8 +1051,8 @@ td.center{text-align:center}
           <div class="conc-icon"><i data-lucide="file-warning"></i></div>
           <div class="conc-body">
             <div class="conc-label">Demanda complementar</div>
-            <div class="conc-value">Não Assistencial <small>· 123 NIPs</small></div>
-            <div class="conc-pct">12,95% do total anual</div>
+            <div class="conc-value">Não Assistencial <small>· 139 NIPs</small></div>
+            <div class="conc-pct">12,61% do total anual</div>
           </div>
         </div>
       </div>
@@ -1091,8 +1081,8 @@ td.center{text-align:center}
           <thead>
             <tr>
               <th id="th-item">Categoria / Item</th>
-              <th class="num">agosto</th>
-              <th class="num">setembro</th>
+              <th class="num">Setembro</th>
+              <th class="num">Outubro</th>
               <th class="num">Var. Abs.</th>
               <th class="num">Var. %</th>
               <th>Status</th>
@@ -1125,7 +1115,7 @@ td.center{text-align:center}
 <!-- ================= FOOTER ================= -->
 <footer class="footer">
   <span><strong>Relatório Setorial GEPAS</strong> · Análise Comparativa de Demandas NIP</span>
-  <span>Fonte: base interna GEPAS · Período: agosto vs. Setembro</span>
+  <span>Fonte: base interna GEPAS · Período: Setembro vs. Outubro</span>
 </footer>
 
 <script>
@@ -1135,46 +1125,45 @@ td.center{text-align:center}
 Chart.register(ChartDataLabels);
 
 /* ============================================================
-   DADOS
+   DADOS — SETEMBRO × OUTUBRO
    ============================================================ */
-const MES_A = 'Agosto';
-const MES_B = 'Setembro';
+const MES_A = 'Setembro';
+const MES_B = 'Outubro';
 
 const DATASETS = {
   causas: [
-    { item:'Rol de Procedimentos',                 a:41, b:52 },
-    { item:'Regras para Acesso aos Atendimentos',  a:18, b:21 },
-    { item:'Prazos Máximos para Atendimento',      a:20, b:24 },
-    { item:'Mensalidades ou Outras Cobranças',     a:9,  b:9  },
-    { item:'Rede de Atendimento',                  a:15, b:21 }
+    { item:'Rol de Procedimentos',                 a:52, b:54 },
+    { item:'Regras para Acesso aos Atendimentos',  a:21, b:27 },
+    { item:'Prazos Máximos para Atendimento',      a:24, b:24 },
+    { item:'Mensalidades ou Outras Cobranças',     a:9,  b:13 },
+    { item:'Rede de Atendimento',                  a:21, b:21 }
   ],
   objeto: [
-    { item:'Cirurgia',    a:19, b:24 },
-    { item:'Consulta',    a:21, b:29 },
-    { item:'Terapia',     a:11, b:23 },
-    { item:'Financeiro',  a:19, b:10 },
-    { item:'Medicamento', a:13, b:13 }
+    { item:'Cirurgia',    a:24, b:23 },
+    { item:'Consulta',    a:29, b:24 },
+    { item:'Terapia',     a:23, b:10 },
+    { item:'Financeiro',  a:10, b:12 },
+    { item:'Medicamento', a:13, b:17 },
+    { item:'Exame',       a:0,  b:35 }
   ],
   cidades: [
-    { item:'Anápolis/GO',                a:12, b:6  },
-    { item:'Aparecida de Goiânia/GO',    a:7,  b:7  },
-    { item:'Brasília/DF',                a:8,  b:8  },
-    { item:'Goiânia/GO',                 a:68, b:91 },
-    { item:'Itaberaí/GO',                a:3,  b:3  }
+    { item:'Anápolis/GO',                a:6, b:15 },
+    { item:'Aparecida de Goiânia/GO',    a:7, b:3  },
+    { item:'Brasília/DF',                a:8, b:4  },
+    { item:'Goiânia/GO',                 a:91, b:85 },
+    { item:'Itaberaí/GO',                a:3, b:2  }
   ],
   areas: [
-    { item:'COARA', a:52, b:76 },
-    { item:'CODIN', a:9,  b:17 },
-    { item:'COARR', a:0,  b:8  },
-    { item:'COFIN', a:9,  b:0  },
-    { item:'COGAT', a:38, b:34 },
-    { item:'CONEG', a:6,  b:3  }
+    { item:'COARA', a:76, b:79 },
+    { item:'CODIN/COGAT', a:51, b:37 },
+    { item:'COARR', a:8,  b:14 },
+    { item:'CONEG', a:3,  b:8  }
   ],
   subcausas: [
-    { item:'Negativa de Cobertura',    a:42, b:55 },
-    { item:'Insuficiência de Rede',    a:33, b:28 },
-    { item:'Solicitação de Reembolso', a:6,  b:9  },
-    { item:'Prazo de Autorização',     a:2,  b:5  }
+    { item:'Negativa de Cobertura',    a:55, b:51 },
+    { item:'Insuficiência de Rede',    a:28, b:27 },
+    { item:'Solicitação de Reembolso', a:9,  b:5  },
+    { item:'Prazo de Autorização',     a:5,  b:19 }
   ]
 };
 
@@ -1187,10 +1176,11 @@ const TABLE_TITLES = {
 };
 
 const PLANOS = [
-  { nome:'IPASGO SAÚDE BÁSICO',   qtd:73 },
-  { nome:'IPASGO SAÚDE ESPECIAL', qtd:52 },
+  { nome:'IPASGO SAÚDE BÁSICO',   qtd:81 },
+  { nome:'IPASGO SAÚDE ESPECIAL', qtd:51 },
   { nome:'IPASGO SAÚDE CERRADO',  qtd:10 },
-  { nome:'IPASGO SAÚDE FAMÍLIA',  qtd:8  }
+  { nome:'IPASGO SAÚDE FAMÍLIA',  qtd:9  },
+  { nome:'IPASGO SAÚDE PLENO',    qtd:1  }
 ];
 
 /* ============================================================
@@ -1248,40 +1238,25 @@ new Chart(document.getElementById('chartCausas'), {
     animation:{ duration:900, easing:'easeOutQuart' },
     plugins:{
       legend:{
-        position:'top',
-        align:'end',
+        position:'top', align:'end',
         labels:{
-          usePointStyle:true,
-          pointStyle:'circle',
-          boxWidth:8,
-          boxHeight:8,
-          padding:18,
-          font:{ size:12, weight:'600', family:'Inter' },
-          color:'#3a5a48'
+          usePointStyle:true, pointStyle:'circle', boxWidth:8, boxHeight:8, padding:18,
+          font:{ size:12, weight:'600', family:'Inter' }, color:'#3a5a48'
         }
       },
       tooltip:{
         backgroundColor:'#1b4332',
         titleFont:{ size:12.5, weight:'700', family:'Inter' },
         bodyFont:{ size:12.5, family:'Inter' },
-        padding:12,
-        cornerRadius:10,
-        displayColors:true,
-        usePointStyle:true,
-        callbacks:{
-          label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y} NIPs`
-        }
+        padding:12, cornerRadius:10, displayColors:true, usePointStyle:true,
+        callbacks:{ label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y} NIPs` }
       },
       datalabels:{
-        anchor:'end',
-        align:'top',
-        offset:2,
-        clamp:true,
+        anchor:'end', align:'top', offset:2, clamp:true,
         color: ctx => ctx.datasetIndex === 0 ? '#2d6a4f' : '#1b4332',
         font:{ size:11.5, weight:'800', family:'Inter' },
         formatter: v => v,
-        textShadowColor:'rgba(255,255,255,.85)',
-        textShadowBlur:4
+        textShadowColor:'rgba(255,255,255,.85)', textShadowBlur:4
       }
     },
     scales:{
@@ -1302,7 +1277,7 @@ new Chart(document.getElementById('chartCausas'), {
 });
 
 /* ============================================================
-   GRÁFICO 2 — ROSCA OBJETO GERAL (SETEMBRO)
+   GRÁFICO 2 — ROSCA OBJETO (OUTUBRO)
    ============================================================ */
 new Chart(document.getElementById('chartObjeto'), {
   type:'doughnut',
@@ -1310,8 +1285,8 @@ new Chart(document.getElementById('chartObjeto'), {
     labels: DATASETS.objeto.map(o => o.item),
     datasets:[{
       data: DATASETS.objeto.map(o => o.b),
-      backgroundColor:['#1b4332','#2d6a4f','#40916c','#74c69d','#b7e4c7'],
-      hoverBackgroundColor:['#0f2419','#1b4332','#2d6a4f','#52b788','#95d5b2'],
+      backgroundColor:['#1b4332','#2d6a4f','#40916c','#52b788','#74c69d','#95d5b2'],
+      hoverBackgroundColor:['#0f2419','#1b4332','#2d6a4f','#40916c','#52b788','#74c69d'],
       borderColor:'#ffffff',
       borderWidth:3,
       hoverOffset:8
@@ -1327,19 +1302,13 @@ new Chart(document.getElementById('chartObjeto'), {
       legend:{
         position:'bottom',
         labels:{
-          usePointStyle:true,
-          pointStyle:'circle',
-          boxWidth:8,
-          boxHeight:8,
-          padding:12,
-          font:{ size:11.5, weight:'600', family:'Inter' },
-          color:'#3a5a48'
+          usePointStyle:true, pointStyle:'circle', boxWidth:8, boxHeight:8, padding:12,
+          font:{ size:11.5, weight:'600', family:'Inter' }, color:'#3a5a48'
         }
       },
       tooltip:{
         backgroundColor:'#1b4332',
-        padding:12,
-        cornerRadius:10,
+        padding:12, cornerRadius:10,
         titleFont:{ size:12.5, weight:'700', family:'Inter' },
         bodyFont:{ size:12.5, family:'Inter' },
         callbacks:{
@@ -1354,8 +1323,7 @@ new Chart(document.getElementById('chartObjeto'), {
         color:'#ffffff',
         font:{ size:11, weight:'800', family:'Inter' },
         textAlign:'center',
-        textShadowColor:'rgba(0,0,0,.45)',
-        textShadowBlur:5,
+        textShadowColor:'rgba(0,0,0,.45)', textShadowBlur:5,
         formatter: (value, ctx) => {
           const total = ctx.dataset.data.reduce((s,v) => s + v, 0);
           const pct = ((value / total) * 100).toFixed(1).replace('.', ',');
@@ -1372,54 +1340,45 @@ new Chart(document.getElementById('chartObjeto'), {
 });
 
 /* ============================================================
-   GRÁFICO 3 — EVOLUÇÃO MENSAL (LINHA)
+   GRÁFICO 3 — EVOLUÇÃO MENSAL (LINHA) — 10 PONTOS
    ============================================================ */
 new Chart(document.getElementById('chartEvolucao'), {
   type:'line',
   data:{
-    labels:['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set'],
+    labels:['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out'],
     datasets:[
       {
         label:'Assistencial',
-        data:[70,75,89,72,92,83,116,101,129],
+        data:[70,75,89,72,92,83,116,101,129,136],
         borderColor:'#2d6a4f',
         backgroundColor:'rgba(45,106,79,.10)',
         borderWidth:2.6,
-        tension:.38,
-        fill:true,
+        tension:.38, fill:true,
         pointBackgroundColor:'#2d6a4f',
-        pointBorderColor:'#ffffff',
-        pointBorderWidth:2,
-        pointRadius:4,
-        pointHoverRadius:6
+        pointBorderColor:'#ffffff', pointBorderWidth:2,
+        pointRadius:3.6, pointHoverRadius:6
       },
       {
         label:'Não Assistencial',
-        data:[18,10,19,8,10,7,19,18,14],
+        data:[18,10,19,8,10,7,19,18,14,16],
         borderColor:'#95d5b2',
         backgroundColor:'rgba(149,213,178,.16)',
         borderWidth:2.6,
-        tension:.38,
-        fill:true,
+        tension:.38, fill:true,
         pointBackgroundColor:'#95d5b2',
-        pointBorderColor:'#ffffff',
-        pointBorderWidth:2,
-        pointRadius:4,
-        pointHoverRadius:6
+        pointBorderColor:'#ffffff', pointBorderWidth:2,
+        pointRadius:3.6, pointHoverRadius:6
       },
       {
         label:'Total',
-        data:[88,85,108,80,102,90,135,119,143],
+        data:[88,85,108,80,102,90,135,119,143,152],
         borderColor:'#1b4332',
         borderWidth:2.2,
         borderDash:[6,5],
-        tension:.38,
-        fill:false,
+        tension:.38, fill:false,
         pointBackgroundColor:'#1b4332',
-        pointBorderColor:'#ffffff',
-        pointBorderWidth:2,
-        pointRadius:3.5,
-        pointHoverRadius:5.5
+        pointBorderColor:'#ffffff', pointBorderWidth:2,
+        pointRadius:3.2, pointHoverRadius:5.5
       }
     ]
   },
@@ -1431,22 +1390,15 @@ new Chart(document.getElementById('chartEvolucao'), {
     interaction:{ mode:'index', intersect:false },
     plugins:{
       legend:{
-        position:'top',
-        align:'end',
+        position:'top', align:'end',
         labels:{
-          usePointStyle:true,
-          pointStyle:'circle',
-          boxWidth:8,
-          boxHeight:8,
-          padding:16,
-          font:{ size:11.5, weight:'600', family:'Inter' },
-          color:'#3a5a48'
+          usePointStyle:true, pointStyle:'circle', boxWidth:8, boxHeight:8, padding:16,
+          font:{ size:11.5, weight:'600', family:'Inter' }, color:'#3a5a48'
         }
       },
       tooltip:{
         backgroundColor:'#1b4332',
-        padding:12,
-        cornerRadius:10,
+        padding:12, cornerRadius:10,
         titleFont:{ size:12.5, weight:'700', family:'Inter' },
         bodyFont:{ size:12.5, family:'Inter' },
         callbacks:{ label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y} NIPs` }
@@ -1460,11 +1412,11 @@ new Chart(document.getElementById('chartEvolucao'), {
         offset: (ctx) => ctx.datasetIndex === 2 ? 6 : 5,
         clamp:true,
         color: (ctx) => ctx.dataset.borderColor,
-        font:{ size:9.5, weight:'800', family:'Inter' },
+        font:{ size:9, weight:'800', family:'Inter' },
         formatter: v => v,
         backgroundColor:'rgba(255,255,255,.85)',
         borderRadius:4,
-        padding:{ top:1, bottom:1, left:3, right:3 },
+        padding:{ top:1, bottom:1, left:2, right:2 },
         display: true
       }
     },
@@ -1478,7 +1430,7 @@ new Chart(document.getElementById('chartEvolucao'), {
       },
       x:{
         grid:{ display:false },
-        ticks:{ color:'#6b8a79', font:{ size:11.5, weight:'600', family:'Inter' } },
+        ticks:{ color:'#6b8a79', font:{ size:10.5, weight:'600', family:'Inter' } },
         border:{ display:false }
       }
     }
@@ -1486,7 +1438,7 @@ new Chart(document.getElementById('chartEvolucao'), {
 });
 
 /* ============================================================
-   GRÁFICO 4 — ÁREAS DEMANDADAS (BARRA HORIZONTAL)
+   GRÁFICO 4 — ÁREAS DEMANDADAS
    ============================================================ */
 new Chart(document.getElementById('chartAreas'), {
   type:'bar',
@@ -1521,31 +1473,21 @@ new Chart(document.getElementById('chartAreas'), {
     animation:{ duration:900, easing:'easeOutQuart' },
     plugins:{
       legend:{
-        position:'top',
-        align:'end',
+        position:'top', align:'end',
         labels:{
-          usePointStyle:true,
-          pointStyle:'circle',
-          boxWidth:8,
-          boxHeight:8,
-          padding:16,
-          font:{ size:11.5, weight:'600', family:'Inter' },
-          color:'#3a5a48'
+          usePointStyle:true, pointStyle:'circle', boxWidth:8, boxHeight:8, padding:16,
+          font:{ size:11.5, weight:'600', family:'Inter' }, color:'#3a5a48'
         }
       },
       tooltip:{
         backgroundColor:'#1b4332',
-        padding:12,
-        cornerRadius:10,
+        padding:12, cornerRadius:10,
         titleFont:{ size:12.5, weight:'700', family:'Inter' },
         bodyFont:{ size:12.5, family:'Inter' },
         callbacks:{ label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.x} NIPs` }
       },
       datalabels:{
-        anchor:'end',
-        align:'right',
-        offset:4,
-        clamp:true,
+        anchor:'end', align:'right', offset:4, clamp:true,
         color: ctx => ctx.datasetIndex === 0 ? '#40916c' : '#1b4332',
         font:{ size:11, weight:'800', family:'Inter' },
         formatter: v => v,
@@ -1570,7 +1512,7 @@ new Chart(document.getElementById('chartAreas'), {
 });
 
 /* ============================================================
-   PLANOS DEMANDADOS — BARRAS CSS
+   PLANOS — BARRAS CSS
    ============================================================ */
 (function renderPlanos(){
   const max = Math.max(...PLANOS.map(p => p.qtd));
@@ -1618,7 +1560,14 @@ function statusBadge(a, b){
 
 function deltaCell(a, b, type){
   const v = variation(a, b);
-  if (v === null) return `<span class="delta flat">—</span>`;
+  if (v === null) {
+    const abs = b - a;
+    if (type === 'abs') {
+      const cls = abs > 0 ? 'up' : abs < 0 ? 'down' : 'flat';
+      return `<span class="delta ${cls}">${fmtAbs(abs)}</span>`;
+    }
+    return `<span class="delta flat">—</span>`;
+  }
   const abs = b - a;
   if (type === 'abs') {
     const cls = abs > 0 ? 'up' : abs < 0 ? 'down' : 'flat';
@@ -1649,11 +1598,11 @@ function renderTable(key){
   }).join('');
 
   const notes = {
-    causas:    'Causas raiz mais recorrentes nas NIPs do período. Volume total das Top 5: 103 em agosto e 127 em setembro.',
-    objeto:    'Classificação por objeto geral da demanda. Terapia (+109,1%) e Financeiro (−47,4%) são os extremos do comparativo.',
-    cidades:   'Goiânia/GO concentra cerca de 80% das demandas das cinco cidades monitoradas em setembro.',
-    areas:     'Áreas internas demandadas. COARR passou a registrar demandas em setembro; COFIN não figurou no período.',
-    subcausas: 'Detalhamento das subcausas. “Negativa de Cobertura” (42 → 55) é o principal vetor de crescimento.'
+    causas:    'Causas raiz mais recorrentes nas NIPs do período. Volume total das Top 5: 127 em Setembro e 139 em Outubro.',
+    objeto:    'Classificação por objeto geral da demanda. EXAME entra como nova categoria em Outubro (35 NIPs); Terapia recua 56,5%.',
+    cidades:   'Goiânia/GO segue concentrando a maior parte das demandas; Anápolis/GO cresce 150% no período.',
+    areas:     'Áreas internas demandadas. CODIN e COGAT atuam em conjunto para uma melhor ação de resposta e resolução eficaz.',
+    subcausas: 'Detalhamento das subcausas. “Prazo de Autorização” salta de 5 → 19 (+280%) — principal vetor de crescimento.'
   };
   tableNote.textContent = notes[key] || '';
 
@@ -1675,32 +1624,64 @@ renderTable('causas');
    ============================================================ */
 const INSIGHTS = [
   {
-    icon:'sparkles',
+    icon:'clock',
     tone:'up',
-    title:'Terapia — salto de +109,1%',
-    sub:'11 → 23 demandas · objeto de maior crescimento relativo',
-    tag:'+109,1%',
+    title:'Prazo de Autorização — salto de +280%',
+    sub:'5 → 19 demandas · maior crescimento percentual do período',
+    tag:'+280,0%',
     tagClass:'up',
     body:`
-      <p>O objeto <strong>Terapia</strong> praticamente dobrou no comparativo, saltando de 11 para 23 demandas (+12 registros). É o maior crescimento percentual de todo o relatório.</p>
-      <p>O movimento é coerente com o avanço da subcausa <strong>Negativa de Cobertura</strong> (42 → 55), que concentra a maior parte das recusas em terapias multidisciplinares — ABA, fonoaudiologia, terapia ocupacional e psicologia.</p>
-      <p><strong>Ação recomendada:</strong> revisão dos critérios de autorização, ampliação do rol de terapeutas credenciados e reforço na orientação prévia ao beneficiário, reduzindo judicialização e retrabalho da área regulatória.</p>
+      <p>A subcausa <strong>Prazo de Autorização</strong> quase quadruplicou no comparativo, saltando de 5 para 19 registros (+14). É o maior salto percentual de todo o relatório de Outubro.</p>
+      <p>Mesmo com base inicial pequena, o movimento merece atenção: é um dos indicadores mais sensíveis à percepção de qualidade do beneficiário e gatilho clássico de reclamações e insatisfação com o plano.</p>
+      <p><strong>Ação recomendada:</strong> revisão imediata dos SLAs de autorização, com painel semanal por especialidade e revisão de filas represadas nas áreas regulatória e assistencial.</p>
       <div class="insight-meta">
-        <span class="pill">Objeto Geral</span>
+        <span class="pill">Subcausa</span>
         <span class="pill warn">Prioridade alta</span>
       </div>`
   },
   {
-    icon:'network',
+    icon:'activity',
+    tone:'down',
+    title:'Terapia — maior queda do período (−56,5%)',
+    sub:'23 → 10 demandas · retração acentuada no objeto',
+    tag:'−56,5%',
+    tagClass:'down',
+    body:`
+      <p>O objeto <strong>Terapia</strong> recuou de 23 para 10 registros (−13), revertendo o pico de Setembro. É a maior queda absoluta do comparativo.</p>
+      <p>O resultado pode indicar efeito das ações de revisão de critérios de autorização adotadas no mês anterior, ou uma migração das recusas para o objeto <strong>Exame</strong>, que aparece pela primeira vez com 35 registros.</p>
+      <p><strong>Ação recomendada:</strong> confirmar se o recuo é estrutural (melhoria no fluxo) ou apenas conjuntural (férias, sazonalidade). Manter o monitoramento mensal das terapias para evitar ressurgimento no próximo ciclo.</p>
+      <div class="insight-meta">
+        <span class="pill">Objeto Geral</span>
+        <span class="pill">Tendência positiva</span>
+      </div>`
+  },
+  {
+    icon:'file-plus',
     tone:'up',
-    title:'Rede de Atendimento — maior alta entre as Top 5 causas',
-    sub:'15 → 21 demandas · +40,0%',
-    tag:'+40,0%',
+    title:'EXAME — nova categoria com 35 demandas em Outubro',
+    sub:'Objeto entra no radar e já é o mais demandado',
+    tag:'Novo',
+    tagClass:'flat',
+    body:`
+      <p>A categoria <strong>Exame</strong> não existia na série até Setembro e aparece em Outubro com <strong>35 registros</strong> — já o maior volume entre todos os objetos, superando Consulta (24) e Cirurgia (23).</p>
+      <p>É um movimento que muda o mapa de prioridades: exames passam a demandar atenção equivalente a consultas e cirurgias, exigindo revisão da esteira de autorização de procedimentos diagnósticos.</p>
+      <p><strong>Ação recomendada:</strong> mapear quais exames lideram as NIPs e verificar se há padrão (ex.: imagem, laboratório, genética). Se confirmado, criar trilha específica de auditoria técnica e credenciamento para essa categoria.</p>
+      <div class="insight-meta">
+        <span class="pill">Objeto Geral</span>
+        <span class="pill warn">Monitorar</span>
+      </div>`
+  },
+  {
+    icon:'gavel',
+    tone:'up',
+    title:'Regras de Acesso — procedentes quadruplicaram (4 → 16)',
+    sub:'21 → 27 demandas · +28,6% no volume, +300% em procedentes',
+    tag:'+28,6%',
     tagClass:'up',
     body:`
-      <p>A causa <strong>Rede de Atendimento</strong> registrou o maior crescimento percentual entre as cinco principais causas (+40,0%), passando de 15 para 21 demandas.</p>
-      <p>Vale notar que, em agosto, <strong>12 das 15 NIPs</strong> dessa causa foram julgadas procedentes (80%); em setembro, apenas <strong>6 das 21</strong> (28,6%) — uma mudança relevante no perfil de decisão.</p>
-      <p><strong>Ação recomendada:</strong> mapear vazios de credenciamento em Goiânia e região metropolitana e priorizar contratualização nas especialidades com maior índice de negativa por ausência de prestador.</p>
+      <p>A causa <strong>Regras para Acesso aos Atendimentos</strong> cresceu 28,6% no volume (21 → 27) e, mais relevante, teve explosão de decisões <strong>procedentes</strong>: de 4 para 16 registros (4x).</p>
+      <p>Isso indica que a maior parte das novas demandas foi acolhida — em Setembro, apenas 19% eram procedentes; em Outubro, <strong>59,3%</strong> o foram. É a principal mudança de perfil decisório do período.</p>
+      <p><strong>Ação recomendada:</strong> investigar a raiz das negativas revertidas — provável falha de orientação na entrada, comunicação insuficiente sobre regras contratuais ou necessidade de revisão dos fluxos de autorização inicial.</p>
       <div class="insight-meta">
         <span class="pill">Causa Raiz</span>
         <span class="pill warn">Prioridade alta</span>
@@ -1709,14 +1690,14 @@ const INSIGHTS = [
   {
     icon:'file-text',
     tone:'up',
-    title:'ROL de Procedimentos — maior volume absoluto',
-    sub:'41 → 52 demandas · +26,8%',
-    tag:'+26,8%',
+    title:'ROL de Procedimentos — improcedentes sobem 14 → 19',
+    sub:'52 → 54 demandas · +3,8% no total, +35,7% em improcedentes',
+    tag:'+3,8%',
     tagClass:'up',
     body:`
-      <p>O <strong>ROL de Procedimentos</strong> segue como a causa mais demandada do relatório, com 52 registros em setembro — um incremento de 11 NIPs frente a agosto.</p>
-      <p>No detalhamento por análise preliminar, houve queda relativa de <strong>procedentes</strong> (20 → 17 ) e <strong>improcedentes</strong> (15 → 14). O ponto de atenção é a <strong>ausência de julgamentos parciais</strong> em setembro, contra 6 em agosto.</p>
-      <p><strong>Ação recomendada:</strong> revisão das negativas automatizadas, capacitação das equipes de autorização e implantação de segunda opinião técnica antes da emissão da negativa formal.</p>
+      <p>O <strong>ROL de Procedimentos</strong> segue como a causa mais demandada do relatório, com 54 registros em Outubro. O volume cresce pouco (+3,8%), mas a composição das decisões piora: <strong>improcedentes saltam de 14 para 19</strong> (+35,7%), enquanto procedentes permanecem estáveis em 17.</p>
+      <p>O dado sugere que o aumento da causa está vindo de demandas com menor aderência técnica, o que pressiona a área de autorização sem gerar resultado assistencial efetivo.</p>
+      <p><strong>Ação recomendada:</strong> reforçar a triagem prévia e o uso de segunda opinião técnica, além de capacitar as equipes para orientar o beneficiário quanto ao enquadramento contratual antes da formalização da NIP.</p>
       <div class="insight-meta">
         <span class="pill">Causa Raiz</span>
         <span class="pill">Volume crítico</span>
@@ -1724,98 +1705,67 @@ const INSIGHTS = [
   },
   {
     icon:'map-pin',
-    tone:'up',
-    title:'Goiânia/GO — concentração de 80% da demanda',
-    sub:'68 → 91 demandas · +33,8%',
-    tag:'+33,8%',
-    tagClass:'up',
-    body:`
-      <p>A capital concentra aproximadamente <strong>80% de toda a demanda</strong> registrada em setembro (91 dos 113 registros das cinco cidades monitoradas).</p>
-      <p>O crescimento de +23 demandas reforça a necessidade de dimensionamento de equipe e monitoramento do tempo de resposta na praça. Em contrapartida, <strong>Anápolis/GO</strong> apresentou queda de 50% (12 → 6), abrindo espaço para avaliação de descentralização do atendimento.</p>
-      <p>Brasília/DF e Aparecida de Goiânia/GO permaneceram estáveis, com 8 e 7 demandas respectivamente.</p>
-      <div class="insight-meta">
-        <span class="pill">Distribuição Geográfica</span>
-        <span class="pill">Concentração</span>
-      </div>`
-  },
-  {
-    icon:'trending-down',
     tone:'down',
-    title:'Financeiro — única queda expressiva do período',
-    sub:'19 → 10 demandas · −47,4%',
-    tag:'−47,4%',
+    title:'Goiânia/GO — recuo de 6,6%, mas mantém 80%',
+    sub:'91 → 85 demandas · concentração se mantém',
+    tag:'−6,6%',
     tagClass:'down',
     body:`
-      <p>O objeto <strong>Financeiro</strong> foi o único a apresentar queda relevante no comparativo, reduzindo 9 demandas (−47,4%).</p>
-      <p>O resultado sugere efeito positivo das ações de comunicação sobre reajustes e cobranças, somado à estabilização da causa <strong>Mensalidades ou Outras Cobranças</strong> (9 → 9, estável).</p>
-      <p><strong>Ação recomendada:</strong> manter o monitoramento para consolidar a tendência e documentar as práticas que geraram o recuo, replicando-as em outras frentes.</p>
+      <p>A capital recuou de 91 para 85 demandas (−6,6%) — primeiro alívio após o pico de Setembro — mas segue concentrando <strong>mais de 80%</strong> de toda a demanda das cinco cidades monitoradas.</p>
+      <p>Em contrapartida, <strong>Anápolis/GO</strong> mais que dobrou (6 → 15, +150%), indicando interiorização da demanda, enquanto Aparecida de Goiânia/GO (−57,1%) e Brasília/DF (−50%) recuaram forte.</p>
+      <p><strong>Ação recomendada:</strong> avaliar capacidade instalada em Anápolis para absorver o crescimento, e reforçar a equipe de Goiânia mesmo com o leve recuo — a base segue muito elevada.</p>
       <div class="insight-meta">
-        <span class="pill">Objeto Geral</span>
-        <span class="pill">Tendência positiva</span>
+        <span class="pill">Distribuição Geográfica</span>
+        <span class="pill">Interiorização</span>
       </div>`
   },
   {
     icon:'building-2',
-    tone:'up',
-    title:'COARA — 55% de toda a demanda das áreas',
-    sub:'52 → 76 demandas · +46,2%',
-    tag:'+46,2%',
-    tagClass:'up',
+    tone:'neutral',
+    title:'CODIN/COGAT — Atuação conjunta para resposta eficaz',
+    sub:'51 → 37 demandas · Estratégia de ação combinada',
+    tag:'Ação Conjunta',
+    tagClass:'flat',
     body:`
-      <p>A área <strong>COARA</strong> segue como principal porta de entrada das demandas, com 76 registros em setembro — o equivalente a <strong>55% do total das áreas monitoradas</strong>.</p>
-      <p>O crescimento de +24 demandas indica sobrecarga operacional progressiva. Em paralelo, <strong>CODIN</strong> praticamente dobrou (9 → 17, +88,9%), enquanto <strong>COGAT</strong> recuou 10,5% (38 → 34) e <strong>CONEG</strong> caiu 50% (6 → 3).</p>
-      <p><strong>Ação recomendada:</strong> avaliar redistribuição de fluxo entre COARA, COGAT e a recém-acionada COARR (8 demandas em setembro).</p>
+      <p>As áreas <strong>CODIN e COGAT</strong> são acionadas em conjunto para uma melhor ação de resposta e resolução eficaz das demandas. No comparativo, o bloco combinado registrou 51 demandas em Setembro e 37 em Outubro (−27,5%).</p>
+      <p>A atuação sinérgica entre as duas áreas permite uma abordagem mais completa e ágil, unindo esforços operacionais e de gestão para resolver as NIPs com maior celeridade e assertividade.</p>
+      <p>Enquanto isso, <strong>COARA</strong> segue na liderança (76 → 79), <strong>COARR</strong> mais que dobrou (8 → 14, +75%) e <strong>CONEG</strong> cresceu 166,7% (3 → 8).</p>
+      <p><strong>Ação recomendada:</strong> documentar e escalar o modelo de atuação conjunta CODIN/COGAT para outras frentes, visando replicar os ganhos de eficiência obtidos com essa integração.</p>
       <div class="insight-meta">
         <span class="pill">Áreas Internas</span>
-        <span class="pill warn">Sobrecarga</span>
+        <span class="pill">Eficiência Operacional</span>
       </div>`
   },
   {
     icon:'split',
     tone:'neutral',
-    title:'Assistencial concentra 87,05% de toda a demanda anual',
-    sub:'827 NIPs assistenciais vs. 123 não assistenciais',
-    tag:'87,05%',
+    title:'Assistencial concentra 87,39% da demanda anual',
+    sub:'963 NIPs assistenciais vs. 139 não assistenciais',
+    tag:'87,39%',
     tagClass:'up',
     body:`
-      <p>A natureza <strong>Assistencial</strong> concentra <strong>87,05% de toda a demanda</strong> do período (827 de 950 NIPs), enquanto a <strong>Não Assistencial</strong> responde por apenas 12,95% (123 NIPs).</p>
-      <p>A concentração é ainda mais evidente quando observamos o mês de setembro: dos 143 NIPs registrados, <strong>129 são assistenciais (90,2%)</strong> — o maior patamar do ano.</p>
-      <p>Essa concentração reforça a necessidade de priorizar recursos de <strong>auditoria assistencial, regulação e credenciamento</strong>, uma vez que é nessa ponta que a pressão de demanda está de fato concentrada.</p>
+      <p>A natureza <strong>Assistencial</strong> concentra <strong>87,39% de toda a demanda</strong> acumulada no ano (963 de 1.102 NIPs), enquanto a <strong>Não Assistencial</strong> responde por apenas 12,61% (139 NIPs). O padrão é estável frente aos meses anteriores.</p>
+      <p>Em Outubro, a proporção se mantém: <strong>136 dos 152 NIPs</strong> (89,5%) são assistenciais. A pressão segue concentrada na ponta assistencial, exigindo priorização de auditoria, regulação e credenciamento.</p>
+      <p><strong>Ação recomendada:</strong> manter o foco em auditoria assistencial e revisar a esteira de exames (novo objeto em Outubro), que já é o mais demandado.</p>
       <div class="insight-meta">
         <span class="pill">Natureza</span>
         <span class="pill warn">Concentração crítica</span>
       </div>`
   },
   {
-    icon:'gavel',
+    icon:'trending-up',
     tone:'up',
-    title:'Mudança no perfil das decisões em setembro',
-    sub:'Procedentes caem de 58 → 40 no Top 5',
-    tag:'Perfil decisório',
-    tagClass:'flat',
-    body:`
-      <p>No comparativo entre os meses, o total de decisões <strong>procedentes</strong> nas Top 5 causas caiu de <strong>58 para 40</strong> (−31,0%), enquanto os <strong>improcedentes</strong> variaram de 37 para 32 e os <strong>parciais</strong> desapareceram no período (8 → 0).</p>
-      <p>O dado sugere <strong>maior seletividade nas decisões</strong> em setembro, com menos NIPs sendo integralmente acolhidas. As causas <strong>Rede de Atendimento</strong> (80% → 28,6% de procedência) e <strong>Regras de Acesso</strong> (50% → 19,0%) são os casos mais expressivos dessa mudança.</p>
-      <p><strong>Ação recomendada:</strong> investigar se a mudança reflete aperfeiçoamento técnico das decisões ou endurecimento da política de autorização, ajustando comunicação e capacitação conforme o caso.</p>
-      <div class="insight-meta">
-        <span class="pill">Decisões</span>
-        <span class="pill warn">Monitorar</span>
-      </div>`
-  },
-  {
-    icon:'clock',
-    tone:'up',
-    title:'Prazo de Autorização — subcausa mais que dobrou',
-    sub:'2 → 5 demandas · +150,0%',
+    title:'Anápolis/GO — salto de +150% na demanda',
+    sub:'6 → 15 demandas · interiorização da pressão',
     tag:'+150,0%',
     tagClass:'up',
     body:`
-      <p>Embora com volume absoluto pequeno, a subcausa <strong>Prazo de Autorização</strong> mais que dobrou no comparativo (2 → 5).</p>
-      <p>É um indicador sensível à percepção de qualidade do beneficiário e um dos principais gatilhos de reclamação e insatisfação. Também houve alta em <strong>Solicitação de Reembolso</strong> (6 → 9, +50%).</p>
-      <p><strong>Ação recomendada:</strong> acompanhamento mensal dedicado e revisão dos SLAs de autorização, especialmente nas especialidades com maior volume.</p>
+      <p>A cidade de <strong>Anápolis/GO</strong> mais que dobrou a demanda no comparativo (6 → 15, +150%), passando a responder por cerca de <strong>14%</strong> das demandas registradas nas cinco cidades monitoradas em Outubro (antes eram apenas 5%).</p>
+      <p>É o principal vetor de interiorização do período, contrastando com a estabilidade de Brasília/DF (8 → 4) e a queda de Aparecida de Goiânia/GO (7 → 3).</p>
+      <p><strong>Ação recomendada:</strong> verificar a capacidade de rede credenciada e o tempo de resposta em Anápolis. Se o crescimento for estrutural, considerar reforço local de auditoria e regulação.</p>
       <div class="insight-meta">
-        <span class="pill">Subcausa</span>
-        <span class="pill warn">Monitorar</span>
+        <span class="pill">Distribuição Geográfica</span>
+        <span class="pill">Interiorização</span>
       </div>`
   }
 ];
@@ -1825,7 +1775,7 @@ const insightsWrap = document.getElementById('insights');
 insightsWrap.innerHTML = INSIGHTS.map(ins => `
   <article class="insight">
     <button class="insight-head" type="button" aria-expanded="false">
-      <span class="insight-icon ${ins.tone === 'down' ? 'down' : ins.tone === 'neutral' ? 'neutral' : ''}">
+      <span class="insight-icon ${ins.tone}">
         <i data-lucide="${ins.icon}"></i>
       </span>
       <span class="insight-titles">
